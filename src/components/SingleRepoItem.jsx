@@ -21,6 +21,7 @@ const RepoItem = () => {
   console.log(repositoryId)
 
   const { loading, error, data } = useQuery(GET_REPO, {
+    fetchPolicy: 'cache-and-network',
     variables: { repositoryId },
   });            //   REMEMBER..... the variable name MUST match the query definition
 

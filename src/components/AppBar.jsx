@@ -36,9 +36,15 @@ const AppBar = () => {
           <Text>Repositories</Text>
       </Link>
       {data && data.me === null ?
-      <Link to="/signin">
-        <Text >Sign In</Text>
-      </Link> :
+      <View>
+        <Link to="/signin">
+          <Text>Sign In</Text>
+        </Link>
+        <Link to="/signup">
+          <Text>Sign Up</Text>
+        </Link>
+      </View>
+      :
       <View>
         <Pressable onPress={() => handleSignOut()}><Text>Sign Out</Text></Pressable>
         <Link to="/addreview">
