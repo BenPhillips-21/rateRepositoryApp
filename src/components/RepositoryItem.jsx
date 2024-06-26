@@ -56,12 +56,12 @@ export const RepositoryItem = ({ item }) => {
     return (
         <View testID="repoItem" style={styles.fatherContainer}>
             <View style={styles.logoAndInfo}>
-                <View>
+                {item.ownerAvatarUrl && <View>
                     <Image 
                     style={styles.tinyLogo}
                     source={{ uri: item.ownerAvatarUrl}}
                     />
-                </View>
+                </View>}
                 <View style={styles.repoInfo}>
                     <Pressable onPress={() => handleRepoPress(item.id)}><Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text></Pressable>
                     <Text>{item.description}</Text>

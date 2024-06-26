@@ -18,6 +18,8 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const RepoItem = () => {
   const { itemid: repositoryId } = useParams();
 
+  console.log(repositoryId)
+
   const { loading, error, data } = useQuery(GET_REPO, {
     variables: { repositoryId },
   });            //   REMEMBER..... the variable name MUST match the query definition

@@ -39,8 +39,6 @@ const postReviewSchema = yup.object().shape({
 const ReviewFormContainer = () => {
     const [postReview, { data, loading, error }] = usePostReview();
 
-    console.log(data)
-
     return (
         <Formik
           validationSchema={postReviewSchema}

@@ -19,7 +19,7 @@ const usePostReview = () => {
           review: { ownerName, rating, repositoryName, text }
         }
       });
-        navigate(`/review/${result.repositoryId}`)
+        navigate(`/repoitem/${result.data.createReview.repositoryId}`)
     } catch (error) {
       // The error is already handled in onError
     }
