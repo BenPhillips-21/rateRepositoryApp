@@ -1,11 +1,12 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, SafeAreaView} from 'react-native';
 import { useParams } from 'react-router-native';
 import { GET_REPO } from '../graphql/queries';
 import Text from './Text';
 import { useQuery } from '@apollo/client';
 import { RepositoryItem } from './RepositoryItem';
 import { Review } from './Review';
+import { ScrollView } from 'react-native-web';
 
 const styles = StyleSheet.create({
     separator: {
@@ -34,16 +35,16 @@ const RepoItem = () => {
   console.log(reviewNodes)
 
   return (
-    <View>
-        {repository && <RepositoryItem item={repository} />}
-        {reviewNodes && 
-        <FlatList
-            data={reviewNodes}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({item}) => <Review item={item} />}
-            keyExtractor={item => item.id}
-        />}
-    </View>
+    <>
+            {reviewNodes && 
+            <FlatList
+                data={reviewNodes}
+                ItemSeparatorComponent={ItemSeparator}
+                renderItem={({item}) => <Review item={item} />}
+                keyExtractor={item => item.id}
+                ListHeaderComponent={() => <RepositoryItem item={repository} />}
+            />}
+    </>
   );
 };
 
