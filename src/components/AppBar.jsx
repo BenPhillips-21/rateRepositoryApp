@@ -39,7 +39,12 @@ const AppBar = () => {
       <Link to="/signin">
         <Text >Sign In</Text>
       </Link> :
+      <View>
         <Pressable onPress={() => handleSignOut()}><Text>Sign Out</Text></Pressable>
+        <Link to="/addreview">
+          <Text>Add Review</Text>
+        </Link>
+      </View>
       }
     </ScrollView>
   </View>;
