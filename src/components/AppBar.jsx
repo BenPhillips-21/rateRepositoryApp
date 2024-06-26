@@ -35,7 +35,7 @@ const AppBar = () => {
       <Link to="/">
           <Text>Repositories</Text>
       </Link>
-      {data.me === null ?
+      {data && data.me === null ?
       <Link to="/signin">
         <Text >Sign In</Text>
       </Link> :

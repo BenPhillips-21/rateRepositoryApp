@@ -1,5 +1,6 @@
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet, Pressable } from 'react-native';
 import Text from './Text';
+import { useNavigate } from 'react-router-native';
 
 const styles = StyleSheet.create({
     fatherContainer: {
@@ -43,9 +44,17 @@ if (count >= 1000) {
 return count.toString();
 };
 
+
+
 export const RepositoryItem = ({ item }) => {
+    const navigate = useNavigate()
+
+    const handleRepoPress = (itemID) => {
+        navigate(`/repoitem/${itemID}`)
+      }
+
     return (
-        <View style={styles.fatherContainer}>
+        <View testID="repoItem" style={styles.fatherContainer}>
             <View style={styles.logoAndInfo}>
                 <View>
                     <Image 
@@ -54,7 +63,7 @@ export const RepositoryItem = ({ item }) => {
                     />
                 </View>
                 <View style={styles.repoInfo}>
-                    <Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text>
+                    <Pressable onPress={() => handleRepoPress(item.id)}><Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text></Pressable>
                     <Text>{item.description}</Text>
                     <Text color="primary">{item.language}</Text>
                 </View>
