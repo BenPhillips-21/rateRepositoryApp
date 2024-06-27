@@ -30,7 +30,10 @@ export const RepositoryListContainer = ({repositories}) => {
 };
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const [orderBy, setOrderBy] = useState(null)
+  const [orderDirection, setOrderDirection] = useState(null)
+
+  const { repositories } = useRepositories(orderBy, orderDirection)
 
   return <RepositoryListContainer repositories={repositories} />;
 };

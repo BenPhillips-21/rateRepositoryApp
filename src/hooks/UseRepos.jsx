@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
-import { GET_REPOSITORIES } from '../graphql/queries';
+import { GET_REPOSITORIES, GET_ORDERED_REPOSITORIES } from '../graphql/queries';
 import { Text } from 'react-native';
 
-const useRepositories = () => {
-  const { loading, data, refetch } = useQuery(GET_REPOSITORIES, {
-    fetchPolicy: 'cache-and-network',
-  });
+const useRepositories = (orderBy, orderDirection) => {
+
+  if (orderBy && orderDirection) {
+    var { loading, data, refetch } = useQuery(GET_ORDERED_REPOSITORIES, {
+      variables: {
+        orderBy, orderDirection
+      },
+      fetchPolicy: 'cache-and-network',
+    });
+  } else {
+    var { loading, data, refetch } = useQuery(GET_REPOSITORIES, {
+      fetchPolicy: 'cache-and-network',
+    });
+  }
 
   const [repositories, setRepositories] = useState();
 
