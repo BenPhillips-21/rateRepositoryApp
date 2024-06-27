@@ -1,7 +1,11 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import Text from './Text';
 import { format } from 'date-fns'
+import { gql, useQuery } from '@apollo/client';
+import { GET_ME } from '../graphql/queries';
+import useDeleteReview from '../hooks/UseDeleteReview';
+import { useApolloClient } from '@apollo/client';
 
 const styles = StyleSheet.create({
     fatherContainer: {
@@ -31,6 +35,25 @@ const styles = StyleSheet.create({
   });
 
 export const Review = ({ item }) => {
+    const apolloClient = useApolloClient()
+    const { loading, error, data } = useQuery(GET_ME, {
+        fetchPolicy: 'cache-and-network',
+    });
+    const [deleteReview, { dat, loadin, err }] = useDeleteReview();
+
+    const handleDeleteReview = async () => {
+        try {
+            const deleteReviewId = item.id
+            await deleteReview({deleteReviewId})
+            apolloClient.resetStore();
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    
+      if (loading) return <Text>Loading...</Text>;
+      if (error) return <Text>Error: {error.message}</Text>;
+
     return (
         <View style={styles.fatherContainer}>
             <View style={styles.ratingContainer}>
@@ -40,7 +63,16 @@ export const Review = ({ item }) => {
                 <Text fontSize="subheading" fontWeight="bold">{item.user.username}</Text>
                 <Text>{format(item.createdAt, 'MM/dd/yyyy')}</Text>
                 <Text>{item.text}</Text>
+                {data.me && data.me.username === item.user.username && (
+                <View>
+                    {/* <Pressable onPress={handleRepoPress}><Text>View Repository</Text></Pressable> */}
+                    <Pressable onPress={handleDeleteReview}>
+                    <Text>Delete Review</Text>
+                    </Pressable>
+                </View>
+                )}
             </View>
+
         </View>
     )
 }
