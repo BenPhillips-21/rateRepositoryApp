@@ -4,6 +4,8 @@ import { useState } from 'react';
 import useRepositories from '../hooks/UseRepos';
 import { Picker } from '@react-native-picker/picker';
 import Text from './Text';
+import { Searchbar } from 'react-native-paper';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -47,6 +49,7 @@ const LePicker = ({ open, setOpen, setOrderBy, setOrderDirection }) => {
           setLeOrder(itemValue);
           setOrderBy(arrayValue[0]);
           setOrderDirection(arrayValue[1]);
+          setOpen(!open)
         }}
       >
         <Picker.Item label="Latest Repositories" value={JSON.stringify(["CREATED_AT", "DESC"])} />
@@ -57,7 +60,7 @@ const LePicker = ({ open, setOpen, setOrderBy, setOrderDirection }) => {
   );
 };
 
-export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, orderDirection, setOrderDirection }) => {
+export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, orderDirection, setOrderDirection, searchKeyword, setSearchKeyword }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
@@ -66,6 +69,11 @@ export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, ord
 
   return (
     <View>
+      <Searchbar
+      placeholder="Search"
+      onChangeText={setSearchKeyword}
+      value={searchKeyword}
+      />
       <Pressable onPress={() => setOpen(!open)}>
         <Text>Order</Text>
       </Pressable>
@@ -84,7 +92,10 @@ const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState(null);
   const [orderDirection, setOrderDirection] = useState(null);
 
-  const { repositories } = useRepositories(orderBy, orderDirection);
+  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [value] = useDebounce(searchKeyword, 500);
+
+  const { repositories } = useRepositories(orderBy, orderDirection, value);
 
   return (
     <RepositoryListContainer 
@@ -93,6 +104,8 @@ const RepositoryList = () => {
       setOrderBy={setOrderBy} 
       orderDirection={orderDirection} 
       setOrderDirection={setOrderDirection} 
+      searchKeyword={searchKeyword}
+      setSearchKeyword={setSearchKeyword}
     />
   );
 };

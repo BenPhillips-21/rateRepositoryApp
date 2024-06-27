@@ -50,6 +50,9 @@ const AppBar = () => {
         <Link to="/addreview">
           <Text>Add Review</Text>
         </Link>
+        <Link to="/myreviews">
+          <Text>My Reviews</Text>
+        </Link>
       </View>
       }
     </ScrollView>
