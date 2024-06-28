@@ -27,6 +27,15 @@ const styles = StyleSheet.create({
   pickerStyle: {
     width: '100%',
   },
+  searchBarStyle: {
+    width: '80%'
+  },
+  searchBarContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10
+  }
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -76,7 +85,9 @@ export const RepositoryListContainer = ({
 
   return (
     <View>
-      <Searchbar placeholder="Search" onChangeText={setSearchKeyword} value={searchKeyword} />
+      <View style={styles.searchBarContainer}>
+        <Searchbar style={styles.searchBarStyle} placeholder="Search" onChangeText={setSearchKeyword} value={searchKeyword} />
+      </View>
       <Pressable onPress={() => setOpen(!open)}>
         <Text>Order</Text>
       </Pressable>
