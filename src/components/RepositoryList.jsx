@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    zIndex: 1000, // Ensures the menu appears in front of everything else
+    zIndex: 1000, 
     backgroundColor: 'white',
   },
   pickerStyle: {

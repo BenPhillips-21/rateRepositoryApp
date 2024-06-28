@@ -6,9 +6,12 @@ const styles = StyleSheet.create({
     fatherContainer: {
       },
     tinyLogo: {
-      margin: 10,
-      width: 50,
-      height: 50,
+      marginTop: 5,
+      marginLeft: 10,
+      marginRight: 0,
+      width: 65,
+      height: 65,
+      borderRadius: '50%'
     },
     logoAndInfo: {
         display: 'flex',
@@ -18,13 +21,15 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         margin: 10,
-        border: '1px solid black'
+        border: '1px solid black',
+        width: '80%'
     },
     repoStats: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: -8
     },
     repoStatContainer: {
         display: 'flex',
@@ -34,7 +39,18 @@ const styles = StyleSheet.create({
         margin: 5,
         marginLeft: 10,
         marginRight: 10
-    }
+    },
+    languageContainer: {
+        backgroundColor: '#0366d6',
+        paddingHorizontal: 3,
+        paddingVertical: 3,
+        borderRadius: 5,
+        alignSelf: 'flex-start',
+        marginTop: 5,
+      },
+      languageText: {
+        color: 'white'
+      }
   });
 
 const formatCount = (count) => {
@@ -65,7 +81,9 @@ export const RepositoryItem = ({ item }) => {
                 <View style={styles.repoInfo}>
                     <Pressable onPress={() => handleRepoPress(item.id)}><Text fontWeight="bold" fontSize="subheading">{item.fullName}</Text></Pressable>
                     <Text>{item.description}</Text>
-                    <Text color="primary">{item.language}</Text>
+                    <View style={styles.languageContainer}>
+                        <Text style={styles.languageText}>{item.language}</Text>
+                    </View>
                 </View>
             </View>
             <View style={styles.repoStats}>
