@@ -1,36 +1,55 @@
 import { useState, useEffect } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES, GET_ORDERED_REPOSITORIES, SEARCH_REPOSITORIES, SEARCH_AND_ORDER_REPOSITORIES } from '../graphql/queries';
-import { Text } from 'react-native';
 
-const useRepositories = (orderBy, orderDirection, searchKeyword) => {
+const useRepositories = (orderBy, orderDirection, searchKeyword, first) => {
+  let variables = { first };
 
+  let query;
   if (orderBy && orderDirection && searchKeyword) {
-    var { loading, data, refetch } = useQuery(SEARCH_AND_ORDER_REPOSITORIES, {
-      variables: {
-        searchKeyword, orderDirection, orderBy
-      },
-      fetchPolicy: 'cache-and-network',
-    });
+    query = SEARCH_AND_ORDER_REPOSITORIES;
+    variables = { ...variables, searchKeyword, orderDirection, orderBy };
   } else if (orderBy && orderDirection) {
-    var { loading, data, refetch } = useQuery(GET_ORDERED_REPOSITORIES, {
-      variables: {
-        orderBy, orderDirection
-      },
-      fetchPolicy: 'cache-and-network',
-    });
+    query = GET_ORDERED_REPOSITORIES;
+    variables = { ...variables, orderBy, orderDirection };
   } else if (searchKeyword) {
-    var { loading, data, refetch } = useQuery(SEARCH_REPOSITORIES, {
-      variables: {
-        searchKeyword
-      },
-      fetchPolicy: 'cache-and-network',
-    });
+    query = SEARCH_REPOSITORIES;
+    variables = { ...variables, searchKeyword };
   } else {
-    var { loading, data, refetch } = useQuery(GET_REPOSITORIES, {
-      fetchPolicy: 'cache-and-network',
-    });
+    query = GET_REPOSITORIES;
   }
+
+  const { loading, data, fetchMore, refetch } = useQuery(query, {
+    variables,
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const handleFetchMore = () => {
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...variables,
+      },
+      updateQuery: (prevResult, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prevResult;
+        return {
+          repositories: {
+            ...fetchMoreResult.repositories,
+            edges: [
+              ...prevResult.repositories.edges,
+              ...fetchMoreResult.repositories.edges,
+            ],
+          },
+        };
+      },
+    });
+  };
 
   const [repositories, setRepositories] = useState();
 
@@ -42,7 +61,7 @@ const useRepositories = (orderBy, orderDirection, searchKeyword) => {
 
   if (loading) return { repositories: null, loading: true, refetch };
 
-  return { repositories, loading: false, refetch };
+  return { repositories, fetchMore: handleFetchMore, loading: false, refetch };
 };
 
 export default useRepositories;

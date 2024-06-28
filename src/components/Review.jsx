@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable, Alert } from 'react-native';
 import Text from './Text';
 import { format } from 'date-fns'
 import { gql, useQuery } from '@apollo/client';
@@ -43,12 +43,24 @@ export const Review = ({ item }) => {
 
     const handleDeleteReview = async () => {
         try {
-            const deleteReviewId = item.id
-            await deleteReview({deleteReviewId})
-            apolloClient.resetStore();
+            Alert.alert('Caution', 'Are you sure you want to delete this review?', [
+                {
+                  text: 'Cancel',
+                  onPress: () => console.log('Cancel Pressed'),
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => proceedWithDeletion()},
+              ]);
+
         } catch (err) {
             console.log(err)
         }
+    }
+
+    const proceedWithDeletion = async () => {
+        const deleteReviewId = item.id
+        await deleteReview({deleteReviewId})
+        apolloClient.resetStore();
     }
     
       if (loading) return <Text>Loading...</Text>;

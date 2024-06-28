@@ -49,7 +49,7 @@ const LePicker = ({ open, setOpen, setOrderBy, setOrderDirection }) => {
           setLeOrder(itemValue);
           setOrderBy(arrayValue[0]);
           setOrderDirection(arrayValue[1]);
-          setOpen(!open)
+          setOpen(!open);
         }}
       >
         <Picker.Item label="Latest Repositories" value={JSON.stringify(["CREATED_AT", "DESC"])} />
@@ -60,20 +60,23 @@ const LePicker = ({ open, setOpen, setOrderBy, setOrderDirection }) => {
   );
 };
 
-export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, orderDirection, setOrderDirection, searchKeyword, setSearchKeyword }) => {
-  const repositoryNodes = repositories
-    ? repositories.edges.map(edge => edge.node)
-    : [];
+export const RepositoryListContainer = ({
+  repositories,
+  onEndReach,
+  orderBy,
+  setOrderBy,
+  orderDirection,
+  setOrderDirection,
+  searchKeyword,
+  setSearchKeyword,
+}) => {
+  const repositoryNodes = repositories ? repositories.edges.map((edge) => edge.node) : [];
 
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <View>
-      <Searchbar
-      placeholder="Search"
-      onChangeText={setSearchKeyword}
-      value={searchKeyword}
-      />
+      <Searchbar placeholder="Search" onChangeText={setSearchKeyword} value={searchKeyword} />
       <Pressable onPress={() => setOpen(!open)}>
         <Text>Order</Text>
       </Pressable>
@@ -82,7 +85,9 @@ export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, ord
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => <RepositoryItem item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id.toString()} // Ensure the key is unique and converted to a string
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
@@ -91,19 +96,25 @@ export const RepositoryListContainer = ({ repositories, orderBy, setOrderBy, ord
 const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState(null);
   const [orderDirection, setOrderDirection] = useState(null);
-
-  const [searchKeyword, setSearchKeyword] = useState(null)
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [value] = useDebounce(searchKeyword, 500);
 
-  const { repositories } = useRepositories(orderBy, orderDirection, value);
+  const { repositories, fetchMore, loading } = useRepositories(orderBy, orderDirection, value, 5);
+
+  const onEndReach = () => {
+    if (!loading) {
+      fetchMore();
+    }
+  };
 
   return (
-    <RepositoryListContainer 
-      repositories={repositories} 
-      orderBy={orderBy} 
-      setOrderBy={setOrderBy} 
-      orderDirection={orderDirection} 
-      setOrderDirection={setOrderDirection} 
+    <RepositoryListContainer
+      repositories={repositories}
+      onEndReach={onEndReach}
+      orderBy={orderBy}
+      setOrderBy={setOrderBy}
+      orderDirection={orderDirection}
+      setOrderDirection={setOrderDirection}
       searchKeyword={searchKeyword}
       setSearchKeyword={setSearchKeyword}
     />

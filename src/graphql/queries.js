@@ -91,9 +91,44 @@ query Repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirec
 }
 `;
 
+// export const GET_REPOSITORIES = gql`
+// query Repositories {
+//   repositories {
+//     totalCount
+//     pageInfo {
+//       hasPreviousPage
+//       hasNextPage
+//       startCursor
+//       endCursor
+//     }
+//     edges {
+//       cursor
+//       node {
+//         id
+//         ownerName
+//         name
+//         createdAt
+//         fullName
+//         ratingAverage
+//         reviewCount
+//         stargazersCount
+//         watchersCount
+//         forksCount
+//         openIssuesCount
+//         url
+//         ownerAvatarUrl
+//         description
+//         language
+//         userHasReviewed
+//       }
+//     }
+//   }
+// }
+// `;
+
 export const GET_REPOSITORIES = gql`
-query Repositories {
-  repositories {
+query Repositories($after: String, $first: Int) {
+  repositories(after: $after, first: $first) {
     totalCount
     pageInfo {
       hasPreviousPage
