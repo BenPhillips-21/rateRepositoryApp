@@ -17,6 +17,11 @@ const cache = new InMemoryCache({
           },
         },
       },
+    Repository: {      
+      fields: {
+        reviews: relayStylePagination(),      
+      },
+    },
   });
 
 const createApolloClient = (authStorage) => {

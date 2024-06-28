@@ -91,41 +91,6 @@ query Repositories($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirec
 }
 `;
 
-// export const GET_REPOSITORIES = gql`
-// query Repositories {
-//   repositories {
-//     totalCount
-//     pageInfo {
-//       hasPreviousPage
-//       hasNextPage
-//       startCursor
-//       endCursor
-//     }
-//     edges {
-//       cursor
-//       node {
-//         id
-//         ownerName
-//         name
-//         createdAt
-//         fullName
-//         ratingAverage
-//         reviewCount
-//         stargazersCount
-//         watchersCount
-//         forksCount
-//         openIssuesCount
-//         url
-//         ownerAvatarUrl
-//         description
-//         language
-//         userHasReviewed
-//       }
-//     }
-//   }
-// }
-// `;
-
 export const GET_REPOSITORIES = gql`
 query Repositories($after: String, $first: Int) {
   repositories(after: $after, first: $first) {
@@ -186,18 +151,18 @@ query getMe($includeReviews: Boolean = false) {
 `;
 
 export const GET_REPO = gql`
-query Repository($repositoryId: ID!) {
+query Repositories($repositoryId: ID!, $after: String, $first: Int) {
   repository(id: $repositoryId) {
-    id
-    fullName
-    ownerName
-    name
-    createdAt
-    fullName
-    ratingAverage
-    reviewCount
-    reviews {
+    reviews(after: $after, first: $first) {
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+      totalCount
       edges {
+        cursor
         node {
           id
           createdAt
@@ -205,19 +170,63 @@ query Repository($repositoryId: ID!) {
           text
           user {
             username
-              }
-            }
           }
         }
-    stargazersCount
-    watchersCount
-    forksCount
-    openIssuesCount
-    url
-    ownerAvatarUrl
+      }
+    }
+    fullName
+    id
+    createdAt
     description
+    forksCount
     language
+    name
+    openIssuesCount
+    ownerAvatarUrl
+    ownerName
+    ratingAverage
+    reviewCount
+    stargazersCount
+    url
     userHasReviewed
+    watchersCount
   }
 }
 `
+
+// export const GET_REPO = gql`
+// query Repository($repositoryId: ID!) {
+//   repository(id: $repositoryId) {
+//     id
+//     fullName
+//     ownerName
+//     name
+//     createdAt
+//     fullName
+//     ratingAverage
+//     reviewCount
+//     reviews {
+//       edges {
+//         node {
+//           id
+//           createdAt
+//           rating
+//           text
+//           user {
+//             username
+//               }
+//             }
+//           }
+//         }
+//     stargazersCount
+//     watchersCount
+//     forksCount
+//     openIssuesCount
+//     url
+//     ownerAvatarUrl
+//     description
+//     language
+//     userHasReviewed
+//   }
+// }
+// `
