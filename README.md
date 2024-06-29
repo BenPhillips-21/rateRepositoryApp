@@ -3,7 +3,7 @@
 Developed by **Benjamin Phillips**
 
 [Backend Repository](https://github.com/fullstack-hy2020/rate-repository-api)
-(Backend note made by me btw)
+(Backend not made by me btw)
 
 ## Table of Contents
 - [About The Project](#about-the-project)
