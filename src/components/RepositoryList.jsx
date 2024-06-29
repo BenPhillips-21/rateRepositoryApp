@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     position: 'absolute',
-    top: 0,
+    top: 55,
     left: 0,
     right: 0,
     zIndex: 1000, 
     backgroundColor: 'white',
   },
   pickerStyle: {
+    marginTop: -50,
     width: '100%',
   },
   searchBarStyle: {
@@ -35,6 +36,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10
+  },
+  orderTextStyle: {
+    marginLeft: 10,
+    marginBottom: 5
   }
 });
 
@@ -47,9 +52,6 @@ const LePicker = ({ open, setOpen, setOrderBy, setOrderDirection }) => {
 
   return (
     <View style={styles.pickerContainer}>
-      <Pressable onPress={() => setOpen(!open)}>
-        <Text>Order</Text>
-      </Pressable>
       <Picker
         style={styles.pickerStyle}
         selectedValue={leOrder}
@@ -89,14 +91,14 @@ export const RepositoryListContainer = ({
         <Searchbar style={styles.searchBarStyle} placeholder="Search" onChangeText={setSearchKeyword} value={searchKeyword} />
       </View>
       <Pressable onPress={() => setOpen(!open)}>
-        <Text>Order</Text>
+        <Text style={styles.orderTextStyle} color={"primary"} fontWeight={"bold"}>Order List</Text>
       </Pressable>
       <LePicker open={open} setOpen={setOpen} setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} />
       <FlatList
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
         renderItem={({ item }) => <RepositoryItem item={item} />}
-        keyExtractor={(item) => item.id.toString()} // Ensure the key is unique and converted to a string
+        keyExtractor={(item) => item.id.toString()}
         onEndReached={onEndReach}
         onEndReachedThreshold={0.5}
       />

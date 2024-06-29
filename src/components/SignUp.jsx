@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, TextInput, View, StyleSheet } from 'react-native';
+import { Pressable, TextInput, View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import useSignUp from '../hooks/UseSignUp';
@@ -16,8 +16,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     width: 320,
+    borderRadius: '20%',
     margin: 5,
     padding: 10, 
+  },
+  submitButton: {
+    backgroundColor: '#0366d6',
+    padding: 10,
+    borderRadius: '20%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14
   },
 });
 
@@ -69,14 +81,16 @@ export const SignUpContainer = ({ handleSubmit }) => {
           {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
           <TextInput
             style={styles.inputBox}
-            placeholder="confirmedPassword..."
+            placeholder="Confirm Password..."
             onChangeText={handleChange('confirmedPassword')}
             onBlur={handleBlur('confirmedPassword')}
             value={values.confirmedPassword}
             secureTextEntry={true}
           />
           {errors.confirmedPassword && <Text style={{ color: 'red' }}>{errors.confirmedPassword}</Text>}
-          <Button onPress={handleSubmit} title="Submit" />
+          <Pressable style={styles.submitButton} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </Pressable>
         </View>
       )}
     </Formik>
