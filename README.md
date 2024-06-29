@@ -8,7 +8,7 @@ Developed by **Benjamin Phillips**
 ## Table of Contents
 - [About The Project](#about-the-project)
 - [Key Features](#key-features)
-- [Demo Pictures](#demo-pictures)
+- [Demo Video](#demo-video)
 - [Usage](#usage)
   
 ## About The Project
