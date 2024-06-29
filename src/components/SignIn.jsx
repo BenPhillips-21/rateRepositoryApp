@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   inputBox: {
     borderWidth: 1,
     borderColor: 'black',
-    borderRadius: '20%',
+    borderRadius: 20,
     width: 320,
     margin: 5,
     padding: 10, 
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   submitButton: {
     backgroundColor: '#0366d6',
     padding: 10,
-    borderRadius: '20%',
+    borderRadius: 20,
     alignItems: 'center',
   },
   buttonText: {

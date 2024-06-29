@@ -31,7 +31,19 @@ const styles = StyleSheet.create({
     },
     ratingText: {
         fontSize: 17,
-    }
+    },
+    submitButton: {
+        backgroundColor: '#0366d6',
+        padding: 5,
+        borderRadius: 20,
+        alignItems: 'center',
+        width: 120
+      },
+      buttonText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 13
+      },
   });
 
 export const Review = ({ item }) => {
@@ -77,9 +89,8 @@ export const Review = ({ item }) => {
                 <Text>{item.text}</Text>
                 {data.me && data.me.username === item.user.username && (
                 <View>
-                    {/* <Pressable onPress={handleRepoPress}><Text>View Repository</Text></Pressable> */}
-                    <Pressable onPress={handleDeleteReview}>
-                    <Text>Delete Review</Text>
+                    <Pressable style={styles.submitButton} onPress={handleDeleteReview}>
+                        <Text style={styles.buttonText}>Delete Review</Text>
                     </Pressable>
                 </View>
                 )}
